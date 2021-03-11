@@ -26,6 +26,7 @@ def get_dataset(batch_size=1):
     def fn(filename):
         x = tf.io.read_file(filename)
         x = tf.image.decode_jpeg(x, channels=3)
+        x = tf.image.resize(x,(256,256))
         img = tf.cast(x, tf.float32) / 127.5 - 1
         #print("\n tipo img = ",type(img),"\n tipo x = ",type(x), filename, type(filename))
         return img
