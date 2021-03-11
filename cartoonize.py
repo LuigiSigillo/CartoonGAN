@@ -5,7 +5,6 @@ import PIL
 import sys
 import glob
 import imageio
-import logging
 import argparse
 import numpy as np
 from tqdm import tqdm
@@ -33,7 +32,14 @@ args = parser.parse_args()
 
 def loadmodel(problem, checkpoint=False):
     models_dir="models"
-    filename = os.path.join(models_dir,DATASET_NAME, '%s.h5' %problem)
+    if problem=="hayao":
+        model_name="convTrans2d_batchNorm_spirited_away_generator_100ep_06-03_15-09_om=1_5_l=1_BEST_59ep"
+    elif problem =="shinkai":
+        model_name = "convTrans2d_batchNorm_your_name_generator_50ep_07-03_22-09_om=1_5_l=1_checkpoint_45ep"
+    else:
+        model_name="convTrans2d_batchNorm_paprika_generator_70ep_08-03_09-54_om=1_5_l=1_BEST_29ep"
+
+    filename = os.path.join(models_dir, '%s.h5' %model_name)
     try:
         model = load_model(filename)
         print("\nModel loaded successfully from file %s\n" %filename)
@@ -52,7 +58,6 @@ def pre_processing(image_path, style, expand_dim=True):
         resized_height = min(height, args.max_resized_height)
         resized_width = int(resized_height * aspect_ratio)
         if width != resized_width:
-            logger.debug(f"resized ({width}, {height}) to: ({resized_width}, {resized_height})")
             input_image = input_image.resize((resized_width, resized_height))
 
     input_image = np.asarray(input_image)
@@ -99,7 +104,6 @@ def save_concatenated_image(image_paths, image_folder="comparison", num_columns=
     if view == "smart":
         width, height = min_shape[0], min_shape[1]
         aspect_ratio = width / height
-        logger.debug(f"(width, height): ({width}, {height}), aspect_ratio: {aspect_ratio}")
         grid_suitable = (len(args.styles) + 1) % num_columns == 0
         is_portrait = aspect_ratio <= 0.75
         if grid_suitable and not is_portrait:
@@ -117,8 +121,6 @@ def save_concatenated_image(image_paths, image_folder="comparison", num_columns=
         rows = np.split(array, num_columns)
         rows = [np.hstack(row) for row in rows]
         images_comb = np.vstack([row for row in rows])
-    else:
-        logger.debug(f"Wrong `comparison_view`: {args.comparison_view}")
 
     images_comb = PIL.Image.fromarray(images_comb)
     file_name = image_paths[0].split("/")[-1]
