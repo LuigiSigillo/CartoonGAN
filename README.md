@@ -6,6 +6,7 @@
 In this project we reproduced the results achieved in the paper [CartoonGAN: Generative Adversarial Networks for Photo Cartoonization](https://openaccess.thecvf.com/content_cvpr_2018/papers/Chen_CartoonGAN_Generative_Adversarial_CVPR_2018_paper.pdf)
 
 A  very detailed description of the project has been produced [here](CartoonGAN.pdf)
+
 A presentation of the re-implementation project can be found [here](https://docs.google.com/presentation/d/1DgYR0unXC9LK3tnl7xCQt-e0ZIzsAR8TzmZfC-z0wQ8/edit?usp=sharing)
 
 
